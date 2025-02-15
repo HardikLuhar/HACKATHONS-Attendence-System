@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="container">
+        <h1>Teacher Login</h1>
+        <form onsubmit="return validateLogin()">
+            
+            <!-- Email Input -->
+            <div class="input-group">
+                <label>Email</label>
+                <div class="input-field">
+                    <i class='bx bx-envelope'></i>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+            </div>
+
+            <!-- Password Input -->
+            <div class="input-group">
+                <label>Password</label>
+                <div class="input-field">
+                    <i class='bx bx-lock'></i>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                    <i class='bx bx-show' id="togglePassword"></i> <!-- Eye icon -->
+                </div>
+            </div>
+
+            <!-- Remember Me & Forgot Password -->
+            <div class="options">
+                <label>
+                    <input type="checkbox" id="rememberMe"> Remember Me 
+                </label>
+                <a href="ForgotPassword.html">Forgot Password?</a>
+            </div>
+
+            <!-- Login Button -->
+            <button type="submit">LOGIN</button>
+        </form>
+    </div>
+
+    <script>
+        function validateLogin() {
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+
+            if (email.trim() === "" || password.trim() === "") {
+                alert("Please enter both email and password.");
+                return false;
+            }
+            return true;
+        }
+
+        // Password show/hide toggle
+        document.getElementById("togglePassword").addEventListener("click", function() {
+            let passwordField = document.getElementById("password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                this.classList.replace("bx-show", "bx-hide"); // Change icon
+            } else {
+                passwordField.type = "password";
+                this.classList.replace("bx-hide", "bx-show");
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Registration</h1>
+        <br>
+        <form onsubmit="return validateForm()">
+            
+            <div class="input-group">
+                <label>Full Name</label>
+                <div class="input-field">
+                    <i class='bx bx-user'></i>
+                    <input type="text" placeholder="Student Name" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Enrollment Number</label>
+                <div class="input-field">
+                    <i class='bx bx-id-card'></i>
+                    <input type="text" placeholder="202300319010049" required>
+                </div>
+            </div>
+
+            <!-- Gender Selection -->
+            <div class="input-group gender-group">
+                <label>Gender</label>
+                <div class="gender-options">
+                    <label><input type="radio" name="gender" value="male" required> Male</label>
+                    <label><input type="radio" name="gender" value="female" required> Female</label>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Email</label>
+                <div class="input-field">
+                    <i class='bx bx-envelope'></i>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+            </div>
+
+            <button type="button" onclick="sendOTP()">Send OTP</button>
+
+            <div class="input-group" id="otpSection" style="display: none;">
+                <label>Enter OTP</label>
+                <div class="input-field">
+                    <i class='bx bx-lock'></i>
+                    <input type="text" id="otpInput" placeholder="Enter OTP">
+                </div>
+                <p id="otp-error" style="color: red; font-size: 14px; display: none;">OTP is incorrect!</p>
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <div class="input-field">
+                    <i class='bx bx-lock'></i>
+                    <input type="password" id="password" placeholder="Password" required>
+                    <i class='bx bx-show' id="togglePassword"></i>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Confirm Password</label>
+                <div class="input-field">
+                    <i class='bx bx-lock'></i>
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                    <i class='bx bx-show' id="toggleConfirmPassword"></i>
+                </div>
+                <p id="error-message"></p>
+            </div>
+
+            <button type="submit">REGISTER</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("togglePassword").addEventListener("click", function() {
+            let passwordField = document.getElementById("password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                this.classList.replace("bx-show", "bx-hide");
+            } else {
+                passwordField.type = "password";
+                this.classList.replace("bx-hide", "bx-show");
+            }
+        });
+
+        document.getElementById("toggleConfirmPassword").addEventListener("click", function() {
+            let confirmPasswordField = document.getElementById("confirmPassword");
+            if (confirmPasswordField.type === "password") {
+                confirmPasswordField.type = "text";
+                this.classList.replace("bx-show", "bx-hide");
+            } else {
+                confirmPasswordField.type = "password";
+                this.classList.replace("bx-hide", "bx-show");
+            }
+        });
+    </script>
+</body>
+</html>
+

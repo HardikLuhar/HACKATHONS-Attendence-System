@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@200..800&display=swap');
+
+        #otp-error {
+            color: red;
+            font-size: 14px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Student Registration</h1>
+        <form onsubmit="return validateForm()">
+
+            <div class="input-group">
+                <label>Full Name</label>
+                <div class="input-field">
+                    <i class='bx bx-user'></i>
+                    <input type="text" placeholder="Student Name" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Enrollment Number</label>
+                <div class="input-field">
+                    <i class='bx bx-id-card'></i>
+                    <input type="text" placeholder="202300319010049" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Gender</label>
+                <input type="radio" name="gender" value="male" required> Male
+                &emsp14;
+                <input type="radio" name="gender" value="female" required> Female
+            </div>
+
+            <div class="input-group">
+                <label>Email</label>
+                <div class="input-field">
+                    <i class='bx bx-envelope'></i>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+            </div>
+
+            <button type="button" onclick="sendOTP()">Send OTP</button>
+
+            <div class="input-group" id="otpSection" style="display: none;">
+                <label>Enter OTP</label>
+                <div class="input-field">
+                    <br>
+                    <i class='bx bx-lock'></i>
+                    <input type="text" id="otpInput" placeholder="Enter OTP">
+                </div>
+                <p id="otp-error">OTP is incorrect!</p>
+            </div>
+            <br>
+            <div class="input-group">
+                <label>Password</label>
+                <div class="input-field">
+                    <i class='bx bx-lock'></i>
+                    <input type="password" id="password" placeholder="Password" required>
+                    <i class='bx bx-show toggle-password' onclick="togglePassword('password', this)"></i>
+
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Confirm Password</label>
+                <div class="input-field">
+                    <i class='bx bx-lock'></i>
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                    <i class='bx bx-show toggle-password' onclick="togglePassword('confirmPassword', this)"></i>
+                </div>
+                <p id="error-message"></p>
+            </div>
+
+            <button type="submit">REGISTER</button>
+        </form>
+    </div>
+
+    <script>
+        let generatedOTP;
+
+        function sendOTP() {
+            let email = document.getElementById("email").value;
+
+            if (!email) {
+                alert("Please enter your email first.");
+                return;
+            }
+
+            generatedOTP = Math.floor(100000 + Math.random() * 900000);
+            alert(`OTP sent to ${email}: ${generatedOTP}`);
+
+            document.getElementById("otpSection").style.display = "block";
+        }
+
+        function togglePassword(fieldId, icon) {
+            let field = document.getElementById(fieldId);
+            if (field.type === "password") {
+                field.type = "text";
+                icon.classList.replace("bx-show", "bx-hide");
+            } else {
+                field.type = "password";
+                icon.classList.replace("bx-hide", "bx-show");
+            }
+        }
+
+
+        function validateForm() {
+            let enteredOTP = document.getElementById("otpInput").value;
+            let password = document.getElementById("password").value;
+            let confirmPassword = document.getElementById("confirmPassword").value;
+            let otpError = document.getElementById("otp-error");
+            let errorMessage = document.getElementById("error-message");
+
+            // Check if OTP is correct
+            if (enteredOTP != generatedOTP) {
+                otpError.style.display = "block";
+                return false;
+            } else {
+                otpError.style.display = "none";
+            }
+
+            // Check if passwords match
+            if (password !== confirmPassword) {
+                errorMessage.style.display = "block";
+                errorMessage.style.color = "red";
+                errorMessage.innerText = "Passwords do not match!";
+                return false;
+            } else {
+                errorMessage.style.display = "none";
+            }
+
+            return true; // Allow form submission
+        }
+    </script>
+</body>
+
+</html>

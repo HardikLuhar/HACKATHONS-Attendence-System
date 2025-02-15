@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify OTP</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Verify OTP</h1>
+        <br><br>
+
+        <form id="otpForm" onsubmit="return checkOTP();">
+            <div class="input-group">
+                <label>Enter OTP</label>
+                <div class="input-field">
+                    <i class='bx bx-lock'></i>
+                    <input type="text" id="otp" placeholder="Enter OTP" required>
+                </div>
+            </div>
+
+            <button type="submit">Verify OTP</button>
+        </form>
+    </div>
+
+    <script>
+        function checkOTP() {
+            let enteredOTP = document.getElementById("otp").value;
+            let correctOTP = sessionStorage.getItem("otp"); // Assume OTP is stored temporarily
+
+            if (enteredOTP === correctOTP) {
+                alert("OTP Verified!");
+                window.location.href = "register_complete.html"; // Redirect to complete registration
+                return false;
+            } else {
+                alert("Incorrect OTP! Try again.");
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

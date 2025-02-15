@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            /* background: #f9f9f9; */
+            background-image: url('do.jpg');
+          
+          }
+
+        .container {
+            text-align: center;
+            width: 400px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .input-group {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            color: rgb(61, 55, 55);
+        }
+
+        .input-field {
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid gray;
+            padding: 5px;
+            position: relative;
+        }
+
+        .input-field i {
+            font-size: 20px;
+            margin-right: 10px;
+            color: black;
+            cursor: pointer;
+        }
+
+        .input-field input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background: transparent;
+        }
+
+        .forgot-password {
+            display: block;
+            text-align: right;
+            margin-bottom: 15px;
+        }
+
+        .forgot-password a {
+            color: blue;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .register-link {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .register-link a {
+            color: blue;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            background: green;
+            color: white;
+            padding: 12px;
+            border: none;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0px 4px 10px rgba(0, 255, 0, 0.2);
+            transition: background 0.3s ease-in-out;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: darkgreen;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Login</h1>
+        <form onsubmit="return validateLogin()">
+            <div class="input-group">
+                <label>Student ID</label>
+                <div class="input-field">
+                    <i class='bx bx-id-card'></i>
+                    <input type="text" id="student-id" placeholder="Enter your student ID" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <div class="input-field">
+                    <i class='bx bx-lock'></i>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                    <i class='bx bx-show' id="togglePassword"></i>
+                </div>
+            </div>
+
+            <div class="forgot-password">
+                <a href="ForgotPassword.html">Forgot Password?</a>
+            </div>
+
+            <button type="submit">LOGIN</button>
+
+            <div class="register-link">
+              Don't have an account?
+                <a href="StudentRegister.html"> Register Now</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function validateLogin() {
+            let studentId = document.getElementById("student-id").value;
+            let password = document.getElementById("password").value;
+
+            if (studentId.trim() === "" || password.trim() === "") {
+                alert("Please enter both student ID and password.");
+                return false;
+            }
+            return true;
+        }
+
+        document.getElementById("togglePassword").addEventListener("click", function() {
+            let passwordField = document.getElementById("password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                this.classList.replace("bx-show", "bx-hide");
+            } else {
+                passwordField.type = "password";
+                this.classList.replace("bx-hide", "bx-show");
+            }
+        });
+    </script>
+</body>
+</html>
