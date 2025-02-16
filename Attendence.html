@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Advanced Attendance Dashboard</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background: #1E1E2F;
+      color: white;
+      margin: 0;
+      padding: 0;
+      overflow: auto;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+    }
+
+    .navbar {
+      width: 100%;
+      background: #3498DB;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 3000; /* Ensure navbar is always above sidebar */
+    }
+    
+    .toggle-btn {
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
+    }
+
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background: #2C3E50;
+      position: fixed;
+      left: -250px;
+      transition: 0.3s ease-in-out;
+      padding-top: 60px;
+      overflow-y: auto;
+      z-index: 1000;
+    }
+
+    .sidebar.show {
+      left: 0;
+    }
+
+    .sidebar a {
+      padding: 15px;
+      text-decoration: none;
+      font-size: 18px;
+      color: white;
+      display: block;
+    }
+
+    .sidebar a:hover {
+      background: #1ABC9C;
+    }
+
+    .content {
+      flex-grow: 1;
+      padding: 20px;
+      width: 100%;
+      transition: margin-left 0.3s;
+      margin-left: 0;
+      margin-top: 60px;
+    }
+
+    .sidebar.show ~ .content {
+      margin-left: 250px;
+      width: calc(100% - 250px);
+    }
+
+    .table-container {
+      max-height: 500px;
+      overflow-y: auto;
+      margin-top: 80px;
+      margin-left: auto;
+      margin-right: auto;
+      transition: margin-left 0.3s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .status-btn {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .present {
+      background-color: green;
+    }
+
+    .absent {
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <span class="toggle-btn" onclick="toggleSidebar()">
+      <i class='bx bx-menu'></i>
+    </span>
+    <span>Attendance Dashboard</span>
+    <span><i class='bx bx-user-circle' style='font-size:24px'></i></span>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <a href="index.html">Dashboard</a>
+    <a href="Attendence.html">Attendance</a>
+    <a href="#">Reports</a>
+    <a href="#">Settings</a>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="content">
+    <div class="table-container">
+      <button class="btn btn-primary export-btn" onclick="exportToCSV()">Export Attendance</button>
+      <br>
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th>Student ID</th>
+            <th>Student Name</th>
+            <th>Course</th>
+            <th>Batch</th>
+            <th>Department</th>
+            <th>Roll Number</th>
+            <th>Contact</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="attendanceTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("show");
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const students = [];
+      for (let i = 1; i <= 20; i++) {
+        students.push({
+          id: `BCA${i.toString().padStart(2, '0')}`,
+          name: `Student ${i}`,
+          course: "BCA",
+          batch: i <= 10 ? "Batch 1" : "Batch 2",
+          department: "IT",
+          rollNumber: i,
+          contact: `98765432${i.toString().padStart(2, '0')}`,
+          status: i % 2 === 0 ? "Present" : "Absent"
+        });
+      }
+
+      const tableBody = document.getElementById("attendanceTable");
+      students.forEach(student => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${student.id}</td>
+          <td>${student.name}</td>
+          <td>${student.course}</td>
+          <td>${student.batch}</td>
+          <td>${student.department}</td>
+          <td>${student.rollNumber}</td>
+          <td>${student.contact}</td>
+          <td>
+            <button class="status-btn ${student.status === 'Present' ? 'present' : 'absent'}" onclick="toggleStatus(this)">
+              ${student.status}
+            </button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    });
+
+    function toggleStatus(button) {
+      if (button.classList.contains("present")) {
+        button.classList.remove("present");
+        button.classList.add("absent");
+        button.textContent = "Absent";
+      } else {
+        button.classList.remove("absent");
+        button.classList.add("present");
+        button.textContent = "Present";
+      }
+    }
+
+    function exportToCSV() {
+      const rows = document.querySelectorAll("#attendanceTable tr");
+      const csvData = [];
+
+      // Add table headers
+      csvData.push(["Student ID", "Student Name", "Course", "Batch", "Department", "Roll Number", "Contact", "Status"].join(","));
+
+      rows.forEach(row => {
+        const cells = row.querySelectorAll("td");
+        const rowData = Array.from(cells).map(cell => cell.innerText);
+        csvData.push(rowData.join(","));
+      });
+
+      const csvContent = "data:text/csv;charset=utf-8," + csvData.join("\n");
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.href = encodedUri;
+      link.download = "attendance_report.csv";
+      link.click();
+    }
+  </script>
+</body>
+</html>
